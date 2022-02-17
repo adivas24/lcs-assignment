@@ -1,0 +1,235 @@
+%CHAPTER VII
+%OF OFFENCES RELATING TO THE ARMY, NAVY AND AIR FORCE
+
+/*
+131. Abetting mutiny, or attempting to seduce a soldier, sailor or airman from his duty.—
+Whoever abets the committing of mutiny by an officer, soldier, sailor or airman, in the Army, Navy or Air Force of the Government of India or attempts to seduce any such officer, soldier, sailor or airman from his allegiance or his duty, shall be punished with imprisonment for life, or with imprisonment of either description for a term which may extend to ten years, and shall also be liable to fine.
+Explanation.—In this section the words “officer”, “soldier”, “sailor” and “airman” include any
+any person subject to the Army Act, the Army Act, 1950 (46 of 1950), the Naval Discipline Act, the the Indian Navy (Discipline) Act,1934 (34 of 1934) the Air Force Act or the Air Force Act,
+1950 (45 of 1950), as the case may be.
+*/
+######      (abetment(X,Y, mutiny)) or (seduce(X,Y)) and soldier(Y) and not success_crime(mutiny) and not soldier(X)-> imprisonment(X,abetment,200,0).
+
+/*
+132. Abetment of mutiny, if mutiny is committed in consequence thereof.—Whoever abets the
+committing of mutiny by an officer, soldier, sailor or airman, in the Army, Navy or Air Force of the
+Government of India, shall, if mutiny be committed in consequence of that abetment, be punished with death or with imprisonment for life, or imprisonment of either description for a term which may extend to ten years, and shall also be liable to fine.
+*/
+######      abetment(X,Y, mutiny) and soldier(Y) and success_crime(mutiny) and not soldier(X) -> death_penalty(X).
+
+/*
+133. Abetment of assault by soldier, sailor or airman on his superior officer, when in execution
+of his office.—Whoever abets an assault by an officer, soldier, sailor or airman, in the Army, Navy or Air Force of the Government of India, on any superior officer being in the execution of his office, shall be punished with imprisonment of either description for a term which may extend to three years, and shall also be liable to fine.
+*/
+######      abetment(X,Y, assault) and soldier(Y) and assaults(Y,Z) and superior(Y,Z) and not success_crime(assault) and not soldier(X) -> imprisonment(X,abetment,3,_)
+
+/*
+134. Abetment of such assault, if the assault committed.—Whoever abets an assault by an officer, soldier, sailor or airman, in the Army, Navy or Air Force of the Government of India, on any superior officer being in the execution of his office, shall, if such assault be committed in consequence of that abetment be punished with imprisonment of either description for a term which may extend to seven years, and shall also be liable to fine.
+*/
+######      abetment(X,Y, assault) and soldier(Y) and assaults(Y,Z) and superior(Y,Z) and success_crime(assault) and not soldier(X) -> imprisonment(X,abetment,7,_)
+
+/*
+135. Abetment of desertion of soldier, sailor or airman.—Whoever, abets the desertion of any
+officer, soldier, sailor or airman, in the Army, Navy or Air Force of the Government of India,
+shall be punished with imprisonment of either description for a term which may extend to two years, or with fine, or with both.
+*/
+######      abetment(X,Y, desertion) and soldier(Y) and not soldier(X) -> imprisonment(X,abetment,2,_)
+/*
+136. Harbouring deserter.—Whoever, except as hereinafter excepted, knowing or having reason to believe that an officer, soldier, sailor or airman, in the Army, Navy or Air Force of the
+Government of India, has deserted, harbours such officer, soldier, sailor or airman, shall be
+punished with imprisonment of either description for a term which may extend to two years, or with fine or with both.
+Exception.—This provision does not extend to the case in which the harbour is given by a wife to her husband.
+*/
+######      soldier(X) and deserted(X) and custody(Y,X) and not husband(X,Y) and not soldier(X) -> imprisonment(X,harbor,2,_)
+
+/*
+137. Deserter concealed on board merchant vessel through negligence of master.—The master or person in charge of a merchant vessel, on board of which any deserter from the Army, Navy or Air Force of the Government of India is concealed, shall, though ignorant of such concealment, be liable to a penalty not exceeding five hundred rupees, if he might have known of such concealment but for some neglect of his duty as such master or person in charge, or but for some want of discipline on board of the vessel.
+*/
+######      is_ship(V) and owner(V, X) and in(Y,V) and soldier(Y) and deserted(Y) and unknowing(X,Y) and not soldier(X) -> imprisonment(X,negligance,0,500)
+
+/*
+138. Abetment of act of insubordination by soldier, sailor or airman.—Whoever abets what he
+knows to be an act of insubordination by an officer, soldier, sailor or airman, in the Army, Navy or air Force, of the Government of India, shall, if such act of insubordination be committed in consequence of that abetment, be punished with imprisonment of either description for a term which may extend to six months, or with fine, or with both.
+*/
+
+######      abetment(X,Y, insubordination) and soldier(Y) and success_crime(insubordination) and not soldier(X) -> imprisonment(X,insubordination,0.5,_)
+
+/*
+139. Persons subject to certain Acts.—No person subject to the Army Act, the Army Act, 1950
+(46 of 1950), the Naval Discipline Act, the Indian Navy (Discipline) Act, 1934 (34 of 1934),
+the Air Force Act or the Air Force Act, 1950 (45 of 1950), is subject to punishment under this Code Code for any of the offences defined in this Chapter.
+*/
+######      Added not soldier to all rules above
+
+/*
+140. Wearing garb or carrying token used by soldier, sailor or airman.—Whoever, not being a
+soldier, sailor or airman in the Military, Naval or Air service of the Government of India, wears
+any garb or carries any token resembling any garb or token used by such a soldier, sailor or airman with the intention that it may be believed that he is such a soldier, sailor or airman, shall be punished with imprisonment of either description for a term which may extend to three months, or with fine which may extend to five hundred rupees, or with both.
+*/
+######       not soldier(X) and wears_military_token(X) -> imprisonment(X,wearingmilitarytoken,0.25,500)
+
+%CHAPTER VIII
+%OF OFFENCES AGAINST THE PUBLIC TRANQUILLITY
+
+/*
+141. Unlawful assembly.—An assembly of five or more persons is designated an “unlawful
+assembly”, if the common object of the persons composing that assembly is—
+First.—To overawe by criminal force, or show of criminal force, the Central or any State
+Government or Parliament or the Legislature of any State, or any public servant in the exercise of the lawful power of such public servant; or
+Second.—To resist the execution of any law, or of any legal process; or
+Third.—To commit any mischief or criminal trespass, or other offence; or
+Fourth.—By means of criminal force, or show of criminal force, to any person, to take or obtain
+possession of any property, or to deprive any person of the enjoyment of a right of way, or of the use of water or other incorporeal right of which he is in possession or enjoyment, or to enforce any right or supposed right; or
+Fifth.—By means of criminal force, or show of criminal force, to compel any person to do what he is not legally bound to do, or to omit to do what he is legally entitled to do.
+Explanation.—An assembly which was not unlawful when it assembled, may subsequently become an unlawful assembly.
+*/
+######      assem.length >= 5 and (assault or resist_law or mischief or robbery or abetment(X, _, Crime)) -> unlawful(assem)
+######      length(assem) >= 5 and (intention(assem,assault)) or (intention(assem,resist_law)) or (intention(assem,mischief)) or (intention(assem,robbery)) or (intention(assem,abet))) -> unlawful(assem)
+
+/*
+142. Being member of unlawful assembly.—Whoever, being aware of facts which render any
+assembly an unlawful assembly, intentionally joins that assembly, or continues in it, is said to be a member of an unlawful assembly.
+*/
+######      member(X, assem) and unlawful(assem) -> unlawful_assem_mem(X)
+
+/*
+143. Punishment.—Whoever is a member of an unlawful assembly, shall be punished with
+imprisonment of either description for a term which may extend to six months, or with fine, or with both.
+*/
+######      unlawful_assem_mem(X) and not armed(X) -> imprisonment(X,assembling,0.5,_)
+
+/*
+144. Joining unlawful assembly armed with deadly weapon.—Whoever, being armed with any
+deadly weapon, or with anything which, used as a weapon of offence, is likely to cause death, is a member of an unlawful assembly, shall be punished with imprisonment of either description for a term which may extend to two years, or with fine, or with both.
+*/
+######      unlawful_assem_mem(X) and armed(X) -> imprisonment(X,assembling,2,_) 
+/*
+
+145. Joining or continuing in unlawful assembly, knowing it has been commanded to
+disperse.—Whoever joins or continues in an unlawful assembly, knowing that such unlawful assembly has been commanded in the manner prescribed by law to disperse, shall be punished with imprisonment of either description for a term which may extent to two years, or with fine, or with both.
+*/
+######      unlawful_assem_mem(X) and commanded_to_disperse(assem) -> imprisonment(X,assembling,2,_)
+/*
+146. Rioting.—Whenever force or violence is used by an unlawful assembly, or by any member
+thereof, in prosecution of the common object of such assembly, every member of such assembly is guilty of the offence of rioting.
+*/
+######      violent(assem) and unlawful(assem) and member(X,assem) -> rioting(X)
+
+/*
+147. Punishment for rioting.—Whoever is guilty of rioting, shall be punished with imprisonment of either description for a term which may extend to two years, or with fine, or with both.
+*/
+######      rioting(X) -> imprisonment(X,assembling,2,_)
+
+/*
+148. Rioting, armed with deadly weapon.—Whoever is guilty of rioting, being armed with a deadly weapon or with anything which, used as a weapon of offence, is likely to cause death, shall be punished with imprisonment of either description for a term which may extend to three years, or with fine, or with both.
+*/
+######      rioting(X) and armed(X) -> imprisonment(X,assembling,3,_)
+/*
+149. Every member of unlawful assembly guilty of offence committed in prosecution of common
+object.—If an offence is committed by any member of an unlawful assembly in prosecution of the common object of that assembly, or such as the members of that assembly knew to be likely to be committed in prosecution of that object, every person who, at the time of the committing of that offence, is a member of the same assembly, is guilty of that offence.
+*/
+######      unlawful(assem) and member(X,assem) and offence(X,Z) and member(Y,assem) and intention(assem,Z) -> offense(Y,Z)
+
+
+/*
+150. Hiring, or conniving at hiring, of persons to join unlawful assembly.—Whoever hires or
+engages, or employs, or promotes, or connives at the hiring, engagement or employment of any person to join or become a member of any unlawful assembly, shall be punishable as a member of such unlawful assembly, and for any offence which may be committed by any such person as a member of such unlawful assembly in pursuance of such hiring, engagement or employment, in the same manner as if he had been a member of such unlawful assembly, or himself had committed such offence.
+*/
+######      I did not understand this law.
+######      hires(X,Y,assem) and unlawful(assem) and 
+/*
+151. Knowingly joining or continuing in assembly of five or more persons after it has been
+commanded to disperse.—Whoever knowingly joins or continues in any assembly of five or more persons likely to cause a disturbance of the public peace, after such assembly has been lawfully commanded to disperse, shall be punished with imprisonment of either description for a term which may extend to six months, or with fine, or with both.
+Explanation.—If the assembly is an unlawful assembly within the meaning of section 141, the
+offender will be punishable under section 145.
+*/
+######      commanded_to_disperse(assem) and member(X, assem) -> imprisonment(X,assembling,0.5,_)
+/*
+152. Assaulting or obstructing public servant when suppressing riot, etc.—Whoever assaults or
+threatens to assault, or obstructs or attempts to obstruct, any public servant in the discharge of his duty as such public servant, in endeavouring to disperse an unlawful assembly, or to suppress a riot or affray, or uses, or threatens, or attempts to use criminal force to such public servant, shall be punished with imprisonment of either description for a term which may extend to three years, or with fine, or with both.
+*/
+######      (assaults(X,Y) or threatens_to_assault(X,Y)) and public_servant(Y) and tried_to_suppress_riot(Y) -> imprisonment(X,assembly,0.25,_)
+/*
+153. Wantonly giving provocation with intent to cause riot—if rioting be committed; if not
+committed.—Whoever malignantly, or wantonly by doing anything which is illegal, gives provocation to any person intending or knowing it to be likely that such provocation will cause the offence of rioting to be committed, shall, if the offence of rioting be committed in consequence of such provocation, be punished with imprisonment of either description for a term which may extend to one year, or with fine, or with both; and if the offence of rioting be not committed, with imprisonment of either description for a term which may extend to six months, or with fine, or with both.
+*/
+######      rioting(X) and incite_riot(Y,X) -> imprisonment(Y,inciting_riot,1,_)
+######      not rioting(X) and incite_riot(Y,X) -> imprisonment(Y,inciting_riot,0.5,_)
+
+/*
+153A. Promoting enmity between different groups on ground of religion, race, place of birth,
+residence, language, etc., and doing acts prejudicial to maintenance of harmony.—(1) Whoever—
+(a) by words, either spoken or written, or by signs or by visible representations or otherwise,
+promotes or attempts to promote, on grounds of religion, race, place of birth, residence, language, caste or community or any other ground whatsoever, disharmony or feelings of enmity, hatred or ill will between different religious, racials, language or regional groups or castes or communities, or (b) commits any act which is prejudicial to the maintenance of harmony between different religious, racial, language or regional groups or castes or communities, and which disturbs or is likely to disturb the public tranquillity, or
+(c) organizes any exercise, movement, drill or other similar activity intending that the
+participants in such activity shall use or be trained to use criminal force or violence or knowing it to be likely that the participants in such activity will use or be trained to use criminal force or violence, or participates in such activity intending to use or be trained to use criminal force or violence or knowing it to be likely that the participants in such activity will use or be trained to use criminal force or violence, against any religious, racial, language or regional group or caste or community and such activity for any reason whatsoever causes or is likely to cause fear or alarm or a feeling of insecurity amongst members of such religious, racial, language or regional group or caste or community, shall be punished with imprisonment which may extend to three years, or with fine, or with both.
+(2) Offence committed in place of worship, etc.—Whoever commits an offence specified in
+sub-section (1) in any place of worship or in any assembly engaged in the performance of religious worship or religious ceremonies, shall be punished with imprisonment which may extend to five years and shall also be liable to fine.
+*/
+######      incite_hatred(X) or incite_violence(X) and not in(Z) and placeOfWorship(Z)-> imprisonment(X,inciting,3,_)
+######      incite_hatred(X) or incite_violence(X) and in(Z) and placeOfWorship(Z) -> imprisonment(X,inciting,5,_)
+
+/*
+153AA. Punishment for knowingly carrying arms in any procession or organising, or holding
+or taking part in any mass drill or mass training with arms.—Whoever knowingly carries arms in any procession or organizes or holds or takes part in any mass drill or mass training with arms in any public place in contravention of any public notice or order issued or made under section 144A of the Code of Criminal Procedure, 1973 (2 of 1974) shall be punished with imprisonment for a term which may extend to six months and with fine which may extend to two thousand rupees.
+Explanation.—“Arms” means articles of any description designed or adapted as weapons for offence or defence and includes firearms, sharp edged weapons, lathis, dandas and sticks.
+*/
+######      armed(X) and in(X, assem) -> imprisonment(X,being_armed,0.5,2000)
+/*
+153B. Imputations, assertions prejudicial to national integration.—(1) Whoever, by words
+either spoken or written or by signs or by visible representations or otherwise,—
+(a) makes or publishes any imputation that any class of persons cannot, by reason of their being
+members of any religious, racial, language or regional group or caste or community, bear true faith and allegiance to the Constitution of India as by law established or uphold the sovereignty and integrity of India, or 
+(b) asserts, counsels, advises, propagates or publishes that any class of persons shall, by reason of their being members of any religious, racial, language or regional group or caste or community, be denied, or deprived of their rights as citizens of India, or
+(c) makes or publishes and assertion, counsel, plea or appeal concerning the obligation of any
+class of persons, by reason of their being members of any religious, racial, language or regional group or caste or community, and such assertion, counsel, plea or appeal causes or is likely to cause disharmony or feelings of enmity or hatred or ill-will between such members and other persons, shall be punished with imprisonment which may extend to three years, or with fine, or with both.
+(2) Whoever commits an offence specified in sub-section (1) in any place of worship or in any
+assembly engaged in the performance of religious worship or religious ceremonies, shall be punished with imprisonment which may extend to five years and shall also be liable to fine.
+*/
+######      publishes_class_traitor(X) or publishes_class_inhuman(X) or publishes_class_disharmony(X) -> incite_class_hatred(X)
+######      incite_class_hatred(X) and not in(Z) and placeOfWorship(Z)-> imprisonment(X,incitehatred,0.25,_)
+######      incite_class_hatred(X) and in(Z) and placeOfWorship(Z) -> imprisonment(X,incite_hatred,5,_)
+
+/*
+154. Owner or occupier of land on which an unlawful assembly is held.—Whenever any unlawful
+assembly or riot takes place, the owner or occupier of the land upon which such unlawful assembly is held, or such riot is committed, and any person having or claiming an interest in such land, shall be punishable with fine not exceeding one thousand rupees, if he or his agent or manager, knowing that such offence is being or has been committed, or having reason to believe it is likely to be committed, do not give the earliest notice thereof in his or their power to the principal officer at the nearest police-station, and do not, in the case of his or their having reason to believe that it was about to be committed, use all lawful means in his or their power to prevent it and, in the event of its taking place, do not use all lawful means in his or their power to disperse or suppress the riot or unlawful assembly.
+*/
+######     ((unlawful(assem) and in(assem,Z)) or (rioting_happened_in(Z) and master(X,Z))) and intention(X,allow_assembly) -> imprisonment(X, allow_riot,0,1000)
+/*
+155. Liability of person for whose benefit riot is committed.—Whenever a riot is committed for
+the benefit or on behalf of any person who is the owner or occupier of any land respecting which such riot takes place or who claims any interest in such land, or in the subject of any dispute which gave rise to the riot, or who has accepted or derived any benefit therefrom, such person shall be punishable with fine, if he or his agent or manager, having reason to believe that such riot was likely to be committed or that the unlawful assembly by which such riot was committed was likely to be held, shall not respectively use all lawful means in his or their power to prevent such assembly or riot from taking place, and for suppressing and dispersing the same.
+*/
+######      Same as above
+
+/*
+156. Liability of agent of owner or occupier for whose benefit riot is committed.—Whenever a
+riot is committed for the benefit or on behalf of any person who is the owner or occupier of any land respecting which such riot takes place, or who claims any interest in such land, or in the subject of any dispute which gave rise to the riot, or who has accepted or derived any benefit therefrom, the agent or manager of such person shall be punishable with fine, if such agent or manager, having reason to believe that such riot was likely to be committed, or that the unlawful assembly by which such riot was committed was likely to be held, shall not use all lawful means in his power to prevent such riot or assembly from taking place and for suppressing and dispersing the same.
+*/
+######      Same as above
+((unlawful(assem) and in(assem,Z)) or (rioting_happened_in(Z) and master(X,Z))) and intention(X,allow_assembly) and agent_of(Y,X) -> imprisonment(Y, allow_riot,0,1000)
+
+/*
+157. Harbouring persons hired for an unlawful assembly—Whoever harbours, receives or
+assembles, in any house or premises in his occupation or charge, or under his control any persons knowing that such persons have been hired, engaged or employed, or are about to be hired, engaged or employed, to join or become members of an unlawful assembly, shall be punished with imprisonment of either description for a term which may extend to six months, or with fine, or with both.
+*/
+######      custody(X,Y) and unlawful_assem_mem(Y) -> imprisonment(X,harbouring,0.5,_)
+
+/*
+158. Being hired to take part in an unlawful assembly or riot.—Whoever is engaged, or hired, or
+offers or attempts to be hired or engaged, to do or assist in doing any of the acts specified in section 141, shall be punished with imprisonment of either description for a term which may extend to six months, or with fine, or with both, or to go armed.—and whoever, being so engaged or hired as aforesaid, goes armed, or engages or offers to go armed, with any deadly weapon or with anything which used as a weapon of offence is likely to cause death, shall be punished with imprisonment of either description for a term which may extend to two years, or with fine, or with both.
+*/
+######      hired(X, Y, unlawful_assem) and not armed(X)-> imprisonment(X,hired_unlawful,0.5,_)
+######      hired(X, Y, unlawful_assem) and armed(X) -> imprisonment(X,hired_unlawful,2,_)
+
+/*
+159. Affray.—When two or more persons, by fighting in a public place, disturb the public peace, they are said to “commit an affray”.
+*/
+######      fight(X,Y) and in(X,Z) and in(Y,Z) and public_place(Z) and disturb_the_peace(X,Y) -> affray(X,Y)
+
+/*
+160. Punishment for committing affray.—Whoever commits an affray, shall be punished with
+imprisonment of either description for a term which may extend to one month, or with fine which may extend to one hundred rupees, or with both.
+*/
+######      affray(X,Y) -> imprisonment(X,affray,0.8333,100)
+######      affray(X,Y) -> imprisonment(Y,affray,0.8333,100)
+

@@ -1,0 +1,56 @@
+%Rules 
+instigates(X) :- write('Has '),write(X), write(' instigated anyone to commit the crime?'),provide_option.
+conspires(X,Y) :- write('Has '),write(X),write(' engaged in a conspiracy with one or more persons towards the crime?'),provide_option.
+willful(X) :- write('Did '), write(X), write(' perform the act of his own will?'),provide_option.
+concealment(X,Y) :- write('Did '), write(X), write(' conceal facts related to the case?'),provide_option.
+misrepresentation(X) :- write('Has '), write(X), write(' been involved in misrepresentation?'),provide_option.
+is_a_consequence(P,Z) :- write('Is '), write(P), write(' a consequence of '), write(Z), write('?'),provide_option.
+isPresent(X) :- write('Was '), write(X), write(' present at the scene at the time?'),provide_option.
+death_penalty(Y,Z) :- write('Is this offence punishable by death?'),provide_option.
+success_crime(Z) :- write('Was the crime '), write(Z), write(' successful?'),provide_option.
+misleads(X,Y,Z) :- write('Has '), write(X), write(' misled '), write(Y), write(' in regards to '), write(Z),write('?'),provide_option.
+collect_arms(X, Y) :- write('Has '), write(X), write(' engaged in the collection of arms for the purpose of '), write(Y), write('?'),provide_option.
+spread_hatred(X) :- write('Has '), write(X), write(' brought or attempted to bring into hatred or contempt, or excited or attempted to
+excite disaffection towards, the Government established by law?'),provide_option.
+receive_plundered_property(X) :- write('Has '), write(X), write(' recieved any plundered property?'),provide_option.
+escapes(Y) :- write('Has '), write(Y), write(' escaped from custody?'),provide_option.
+custody(X,Y):- write('Is '), write(Y), write(' under the custody of '), write(X),write('?'),provide_option.
+
+
+
+abetment(X,Y,_) :- instigates(X);conspires(X,_);not(unknowing(X)).
+instigates(X) :- willful(X),(concealment(X,_);misrepresentation(X)).
+abettor(X,Z):-   not(under7(X)), not(crazy(X)), not(immature(X)), abetment(X,_,_).
+offence(X,Z):- abetment(X,_,Z).
+abetment(X,_,Z) :- abetment(Y,_,Z), abetment(X,Y,_).
+offence(X,Z) :- abettor(X,Z).
+offence(X,Z) :- abetment(X,Y,Z), offence(Y,P), (P \= Z).
+offence(X,P) :- abetment(X,Y,Z), offence(Y,P),is_a_consequence(P,Z), not(unknowing(X)).
+offence(X,Z) :- abettor(X,Z), isPresent(X,Z).
+imprisonment(X,Z,7,_) :- abetment(X,Y,Z), death_penalty(Y,Z), not(success_crime(Z)), not(harms(Y,_)).
+imprisonment(X,Z,14,_) :- abettor(X,Y,Z), death_penalty(Z), not(success_crime(Z)), harms(Y,_).
+quart_imprisonment(X,Z,_) :- abetment(X,Y,Z), not(success_crime(Z)), not(public_servant(X)), not(public_servant(Y)).
+half_imprisonment(X,Z,_) :- abetment(X,Y,Z), not(success_crime(Z)), (public_servant(X);public_servant(Y)).
+imprisonment(X,Z,7,_) :- misleads(X,Y,Z), death_penalty(Y,Z), success_crime(Z).
+imprisonment(X,Z,3,_) :- misleads(X,Y,Z), death_penalty(Y,Z), not(success_crime(Z)).
+half_imprisonment(X,Z,_) :- misleads(X,Y,Z), public_servant(X), success_crime(Z), not(death_penalty(Y,Z)).
+imprisonment(X,Z,10,_) :- misleads(X,Y,Z), public_servant(X), success_crime(Z), death_penalty(Y,Z).
+quart_imprisonment(X,Z,_) :- misleads(X,Y,Z), public_servant(X),not(success_crime(Z)), not(death_penalty(Y,Z)).
+quart_imprisonment(X,Z,_) :- misleads(X,Y,Z), not(public_servant(X)), success_crime(Z), not(death_penalty(Y,Z)).
+eighth_imprisonment(X,Z,_) :- misleads(X,Y,Z), not(public_servant(X)), not(success_crime(Z)), not(death_penalty(Y,Z)).
+criminal_conspiracy(X,Z) :- agreement(X,Y,Z), intention(X,Z), intention(Y,Z).
+abetment(X,K,Z) :- criminal_conspiracy(X,Z), death_penalty(K,Z).
+imprisonment(X,Z,0.5,_) :- criminal_conspiracy(X,Z), not(death_penalty(X,Z)).
+imprisonment(X,_,200,_) :- criminal_conspiracy(X, war).
+death_penalty(X,war) :- abetment(X,_,war) ; success_crime(war).
+imprisonment(X,war,200,_) :- collect_arms(X, war), intention(X, war).
+imprisonment(X, war, 10, _) :- intention(Y, war), concealment(X,Y).
+imprisonment(X, _, 7, _) :- assault(X, vip), intention(X, restrain).
+imprisonment(X, _, 200, _) :- spread_hatred(X).
+imprisonment(X, _, 200, _) :- abetment(X,_, war_with_asiatic_country) ; success_crime(war_with_asiatic_country).
+imprisonment(X, _, 7, _) :- success_crime(war_with_friend_country).
+imprisonment(X, _, 7, _) :- receive_plundered_property(X).
+imprisonment(X, _, 200, _) :- public_servant(X), custody(X, Y), escapes(Y), intention(X, escape).
+imprisonment(X, _, 3, _) :- public_servant(X), custody(X, Y), escapes(Y), not(intention(X, escape)).
+imprisonment(X, _, 200, _) :- prisoner(Y), (escapes(Y) ; concealment(X,Y)), intention(X, escape).
+imprisonment(X, _, 3, _) :- abetment(X,assem(Y,_),Z), (Y>10).

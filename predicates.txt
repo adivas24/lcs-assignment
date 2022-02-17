@@ -1,0 +1,101 @@
+mistake_of_law
+mistake_of_fact
+believes(1)
+bound_law(1)
+justified_law(1)
+offense
+judge(1)
+following_judgement(1)
+accident
+misfortune
+intention(1)
+harm
+prevent_harm
+under7(1)
+under12(1)
+under18(1)
+immature(1)
+crazy(1)
+unknowing(1)
+intoxicated_against_will(1)
+intoxicated(1)
+consent(1)
+imp_consent(1)
+death_intention
+benefit(1)
+guardian(1)  **function term**
+abetment(3)
+save_life(1)
+fear(1)
+offense_ind_of_harm
+communicate(2)
+murder(2)
+death_penalty(1)
+death_threat(1)
+private_def(1)
+prop_theft
+death_threat(1)
+rape(2)
+kidnapping
+confinement
+acid(2)
+arson
+innocent(1)
+abettor(1)
+abetted(1)
+imprisonment_7-fine(1)
+imprisonment_14-fine(1)
+half-fine(1)
+quart-fine(1)
+imprisonment_3-fine(1)
+misleading
+imprisonment_10-fine(1)
+eighth-fine(1)
+criminal_conspiracy
+imprisonment_6m-fine(1)
+waging-war(2)
+life_imprisonment(1)
+intent_waging_war(1)
+concealment(2)
+assault(2)
+vvip(1)
+asiatic_alliance(2)
+receive_plundered_property(1)
+custody(2)
+prisoner(1)
+escapes(1)
+seduce(2)
+soldier(1)
+mutiny_happens
+assault_superior_happens
+imprisonment_2-fine(1)
+desertion
+deserted(1)
+master(2)
+in(2)
+fine500(1)
+wears_military_token(1)
+imprisonment_3m-fine(1)
+resist_law
+mischief
+robbery
+unlawful(1)
+armed(1)
+violence
+rioting(1)
+commanded_to_disperse(1)
+suppress_riot(1)
+incite_riot(1)
+incite_hatred(1)
+incite_violence(1)
+in
+placeOfWorship(1)
+
+//merge all imprisonments into a single predicate
+//merge fines
+//define all singular terms as new predicates
+// consruct proper function terms
+// provide additional definitions
+// form proper structure
+// create proper database
+// interactive program???

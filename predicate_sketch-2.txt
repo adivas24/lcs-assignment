@@ -1,0 +1,145 @@
+
+start :- write('To determine the punishment for a certain person, type'),nl,write('determine_punishment(name,offence).'),
+nl,write('and answer the questions that follow.').
+
+
+%Facts
+off_req_intent(murder).
+prop_theft(robbery).
+prop_theft(theivery).
+prop_theft(stealing).
+arson(arson).
+
+%Rules
+
+determine_punishment(X,Y):- no_offence(X,Y),nl,write('As per law, no offence has been committed'),nl.
+determine_punishment(X,Y):- offence(X,Y).
+
+provide_option :- nl,write('Press 1. for yes anything else for no.'),nl,write('**Note: a fullstop at the end of your input is necessary.'),nl,get(Y),nl,(Y is 1).
+mistake_of_fact(X) :- write('Is this a case of mistaken fact?'),provide_option.
+believes_bound_by_law(X) :- write('Did '),write(X),write(' believe that he/she was bound by law to do so?'),provide_option.
+believes_justified_by_law(X) :- write('Did '),write(X),write(' believe that he/she was justified by law to do so?'),provide_option.
+judge(X) :- write('Was '),write(X),write(' a judge of the court?'),provide_option.
+following_judgement(X):- write('Was '),write(X),write(' following the judgement of a court or public servant?'),provide_option.
+accident(X) :- write('Was this an accident?'),provide_option.
+misfortune(X) :- write('Would you classify this as a misfortune?'),provide_option.
+intention(X,Z) :- write('Was '),write(X),write(' intending for '),write(Z),write(' to happen?'),provide_option.
+prevent_harm(X,Z) :- write('Was '),write(X),write(' trying to save '),write(Z),write('?'),provide_option.
+under7(X) :- write('Is '),write(X),write(' under the age of 7?'),provide_option.
+under12(X) :- write('Is '),write(X),write(' under the age of 12?'),provide_option.
+under18(X) :- write('Is '),write(X),write(' under the age of 18?'),provide_option.
+immature(X) :- write('Is '),write(X),write(' not mature enough to comprehend his actions?'),provide_option.
+harms(X,Y) :- write('Did '),write(X),write(' harm '),write(Y),write('?'),provide_option.
+crazy(X) :- write('Is '),write(X),write(' clinically insane?'),provide_option.
+unknowing(X) :- write('Was '),write(X),write(' unanware of the consequences?'),provide_option.
+intoxicated_against_will(X):- write('Was '),write(X),write(' intoxicated against his/her will?'),provide_option.
+%off_req_intent(Y):- write('Does '),write(Y),write(' require intention to be an offence?'),provide_option.
+intoxicated(X) :- write('Was '),write(X),write(' intoxicated?'),provide_option.
+fear(Y) :- write('Was '),write(Y),write(' forced to give consent due to fear?'),provide_option.
+consent(Y) :- not(fear(Y);mistake_of_fact(Y);under12(Y);crazy(Y);intoxicated(Y)),not(unknowing(Y)).
+offence_ind_of_harm(Y) :- write('Is '),write(Y),write(' an offense, irrespective of the harm it causes?'),provide_option.
+benefit(Y) :- write('Was the purpose of the act to benefit '),write(Y),write('?'),provide_option.
+guardian(X,Y) :- write('Is '),write(X),write(' the guardian of '),write(Y),write('?'),provide_option.
+save_life(Y) :- write('Was the purpose of the act to save the life of '),write(Y),write('?'),provide_option.
+imp_consent(Y) :- write('Was '),write(Y),write(' incapable of giving consent?'),provide_option.
+communicate(X,Z) :- write('Did '),write(X),write(' communicate some information which harmed '),write(Z),write('?'),provide_option.
+murder(X) :- write('Was '),write(X),write(' killed?'),provide_option.
+death_threat(X) :- write('Was '),write(X),write(' under threat of death?'),provide_option.
+public_servant(X) :- write('Was/Is '),write(X),write(' a public servant?'),provide_option.
+rape(X,Y) :- write('Did '),write(X),write('attempt to rape '),write(Y),write('?'),provide_option.
+kidnapping(X,Y) :- write('Did '),write(X),write('attempt to kidnap/abduct '),write(Y),write('?'),provide_option.
+confinement(X,Y) :- write('Did '),write(X),write('attempt to wrongfully confine '),write(Y),write('?'),provide_option.
+acid(X,Y) :- write('Did '),write(X),write('attempt to throw acid on '),write(Y),write('?'),provide_option.
+instigates(X) :- write('Has '),write(X), write(' instigated anyone to commit the crime?'),provide_option.
+instigates(X) :- willful(X),(concealment(X,_);misrepresentation(X)).
+conspires(X,Y) :- write('Has '),write(X),write(' engaged in a conspiracy with one or more persons towards the crime?'),provide_option.
+willful(X) :- write('Did '), write(X), write(' perform the act of his own will?'),provide_option.
+concealment(X,Y) :- write('Did '), write(X), write(' conceal facts related to the case?'),provide_option.
+misrepresentation(X) :- write('Has '), write(X), write(' been involved in misrepresentation?'),provide_option.
+is_a_consequence(P,Z) :- write('Is '), write(P), write(' a consequence of '), write(Z), write('?'),provide_option.
+isPresent(X) :- write('Was '), write(X), write(' present at the scene at the time?'),provide_option.
+success_crime(Z) :- write('Was the crime '), write(Z), write(' successful?'),provide_option.
+misleads(X,Y,Z) :- write('Has '), write(X), write(' misled '), write(Y), write(' in regards to '), write(Z),write('?'),provide_option.
+collect_arms(X, Y) :- write('Has '), write(X), write(' engaged in the collection of arms for the purpose of '), write(Y), write('?'),provide_option.
+spread_hatred(X) :- write('Has '), write(X), write(' brought or attempted to bring into hatred or contempt, or excited or attempted to
+excite disaffection towards, the Government established by law?'),provide_option.
+receive_plundered_property(X) :- write('Has '), write(X), write(' recieved any plundered property?'),provide_option.
+escapes(Y) :- write('Has '), write(Y), write(' escaped from custody?'),provide_option.
+custody(X,Y):- write('Is '), write(Y), write(' under the custody of '), write(X),write('?'),provide_option.
+
+no_offence(X,_) :- mistake_of_fact(X), (believes_bound_by_law(X); believes_justified_by_law(X)).
+no_offence(X,_) :- judge(X), believes_justified_by_law(X).
+no_offence(X,_) :- following_judgement(X).
+no_offence(X,_) :- (accident(X); misfortune(X)), not(intention(X,_)).
+no_offence(X,_) :- harms(X,Y), not(intention(X,_)), prevent_harm(X,Z).
+no_offence(X,_) :- under7(X);(under12(X), immature(X)).
+no_offence(X,_) :- crazy(X), unknowing(X).
+no_offence(X,Y) :- intoxicated_against_will(X), (off_req_intent(Y);unknowing(X)).
+no_offence(X,Z) :- not(intention(X,Z)), harms(X,Y), consent(Y), not(under18(Y)), not(offence_ind_of_harm(Z)).
+no_offence(X,Z) :- not(intention(X, murder)),consent(Y),benefit(Y), not(offence_ind_of_harm(Z)).
+no_offence(X,Z) :- benefit(Y),(under12(X);crazy(X)),consent(Z),guardian(Z,Y),not(intention(X, murder);not(unknowing(X));abetment(X,Y,_),not(save_life(Y))), not(offense_ind_of_harm(Z)).
+no_offence(X,Z) :- benefit(Y),(consent(Y);imp_consent(Y)),not(intention(X, murder)),(unknowing(X);save_life(Y)),not(abetment(_,_,Z)).
+no_offence(X,_) :- communicate(X,Y),benefit(Y).
+no_offence(X,Z) :- not(murder(Z)),not(death_penalty(X,Z)),death_threat(X),not(intention(X,Z)).
+no_offence(X,_) :- not(harms(X,Y)).
+no_offence(X,_) :- private_def(X).
+
+private_def(Y) :- (offence(X,_),harms(X,Y));offence(X,Z),prop_theft(Z),not(cond_for_no_private_defense(X,Y)).
+private_def(Y) :- not(offence(X)),(under12(X);immature(X);crazy(X);intoxicated(X);mistake_of_fact(X)),not(cond_for_no_private_defense(X,Y)).
+private_def(Y) :- murder(Y,X),cond1(X,Y).
+private_def(Y) :- not(murder(Y,X)),offense(X,Y,Z),prop_theft(Z).
+
+cond1(X,Y) :- death_threat(Y);rape(X,Y);kidnapping(X,Y);confinement(X,Y);acid(X,Y);(offense(X,Y,Z),(prop_theft(Z);arson(Z))).
+cond_for_no_private_defense(X,Y) :- not(harms(X,Y));(public_servant(X),believes_justified_by_law(X));following_judgement(X);(murder(Y,X),not(cond1(X,Y))).
+
+%Rules
+
+
+abetment(X,Y,_) :- instigates(X);conspires(X,_);not(unknowing(X)).
+abetment(X,K,Z) :- criminal_conspiracy(X,Z), death_penalty(K,Z).
+abetment(X,_,Z) :- abetment(Y,_,Z), abetment(X,Y,_).
+
+abettor(X,Z):-   not(under7(X)), not(crazy(X)), not(immature(X)), abetment(X,_,_).
+
+offence(X,Z):- abetment(X,_,Z).
+offence(X,Z) :- abettor(X,Z).
+offence(X,Z) :- abetment(X,Y,Z), offence(Y,P), (P \= Z).
+offence(X,P) :- abetment(X,Y,Z), offence(Y,P),is_a_consequence(P,Z), not(unknowing(X)).
+offence(X,Z) :- abettor(X,Z), isPresent(X,Z).
+offence(X,Z) :- offence_ind_of_harm(Z),not(no_offense(X,Z)).
+offence(X,Y) :- intoxicated(X), not(intoxicated_against_will(X)), off_req_intent(Y).
+offence(X,Y) :- not(no_offence(X,Y)).
+
+quart_imprisonment(X,Z,_) :- abetment(X,Y,Z), not(success_crime(Z)), not(public_servant(X)), not(public_servant(Y)).
+quart_imprisonment(X,Z,_) :- misleads(X,Y,Z), public_servant(X),not(success_crime(Z)), not(death_penalty(Y,Z)).
+quart_imprisonment(X,Z,_) :- misleads(X,Y,Z), not(public_servant(X)), success_crime(Z), not(death_penalty(Y,Z)).
+
+eighth_imprisonment(X,Z,_) :- misleads(X,Y,Z), not(public_servant(X)), not(success_crime(Z)), not(death_penalty(Y,Z)).
+
+criminal_conspiracy(X,Z) :- agreement(X,Y,Z), intention(X,Z), intention(Y,Z).
+
+half_imprisonment(X,Z,_) :- abetment(X,Y,Z), not(success_crime(Z)), (public_servant(X);public_servant(Y)).
+half_imprisonment(X,Z,_) :- misleads(X,Y,Z), public_servant(X), success_crime(Z), not(death_penalty(Y,Z)).
+
+imprisonment(X,Z,10,_) :- misleads(X,Y,Z), public_servant(X), success_crime(Z), death_penalty(Y,Z).
+imprisonment(X,Z,7,_) :- abetment(X,Y,Z), death_penalty(Y,Z), not(success_crime(Z)), not(harms(Y,_)).
+imprisonment(X,Z,14,_) :- abettor(X,Y,Z), death_penalty(Z), not(success_crime(Z)), harms(Y,_).
+imprisonment(X,Z,7,_) :- misleads(X,Y,Z), death_penalty(Y,Z), success_crime(Z).
+imprisonment(X,Z,3,_) :- misleads(X,Y,Z), death_penalty(Y,Z), not(success_crime(Z)).
+imprisonment(X,Z,0.5,_) :- criminal_conspiracy(X,Z), not(death_penalty(X,Z)).
+imprisonment(X,_,200,_) :- criminal_conspiracy(X, war).
+imprisonment(X,war,200,_) :- collect_arms(X, war), intention(X, war).
+imprisonment(X, war, 10, _) :- intention(Y, war), concealment(X,Y).
+imprisonment(X, _, 7, _) :- assault(X, vip), intention(X, restrain).
+imprisonment(X, _, 200, _) :- spread_hatred(X).
+imprisonment(X, _, 200, _) :- abetment(X,_, war_with_asiatic_country) ; success_crime(war_with_asiatic_country).
+imprisonment(X, _, 7, _) :- success_crime(war_with_friend_country).
+imprisonment(X, _, 7, _) :- receive_plundered_property(X).
+imprisonment(X, _, 200, _) :- public_servant(X), custody(X, Y), escapes(Y), intention(X, escape).
+imprisonment(X, _, 3, _) :- public_servant(X), custody(X, Y), escapes(Y), not(intention(X, escape)).
+imprisonment(X, _, 200, _) :- prisoner(Y), (escapes(Y) ; concealment(X,Y)), intention(X, escape).
+imprisonment(X, _, 3, _) :- abetment(X,Assem,Z),size(Assem,Y),(Y>10).
+
+
+death_penalty(X,war) :- abetment(X,_,war) ; success_crime(war).
+death_penalty(Y,Z) :- write('Is this offence punishable by death?'),provide_option.

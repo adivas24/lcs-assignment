@@ -1,0 +1,4 @@
+// extensive testing, especially of new code structure
+// deal with uninitialised variables
+// build database
+// complete documentation
